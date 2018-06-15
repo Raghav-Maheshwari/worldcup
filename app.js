@@ -4,8 +4,11 @@ var knex = require('knex');
 //create new app:
 var app = express();
 
+var router = express.Router();
+var request = require('request');
+
 //GET request for users:
-app.get('/users', function(request, response) {
+app.get('/api/users', function(request, response) {
     let connection = connect();
 
     let promise = connection.select().from('users');
@@ -21,8 +24,25 @@ app.get('/users', function(request, response) {
     });
 });
 
+//GET request for user_countries:
+app.get('/api/user_countries', function(request, response) {
+    let connection = connect();
+
+    let promise = connection.select()
+        .from('users').innerJoin('user_countries', 'users.UserID', '=', 'user_countries.UserID')
+        .innerJoin('countries', 'user_countries.CountryID', '=', 'countries.CountryID');
+
+    promise.then(function(users) {
+        response.json(users);
+    }, function() {
+        response.json({
+            error: 'something went wrong'
+        });
+    });
+});
+
 //GET request for countries:
-app.get('/countries', function(request, response) {
+app.get('/api/countries', function(request, response) {
     let connection = connect();
 
     let promise = connection.select().from('countries');
