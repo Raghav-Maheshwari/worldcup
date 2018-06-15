@@ -1,0 +1,24 @@
+{
+  "name": "worldcup",
+  "version": "1.0.0",
+  "description": "A single page dynamic web app for visualizing and managing the World Cup 2018 Competition game",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raghav-Maheshwari/worldcup.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raghav-Maheshwari/worldcup/issues"
+  },
+  "homepage": "https://github.com/Raghav-Maheshwari/worldcup#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "knex": "^0.14.6",
+    "sqlite3": "^4.0.0"
+  }
+}
