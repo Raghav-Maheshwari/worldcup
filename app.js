@@ -21,6 +21,22 @@ app.get('/users', function(request, response) {
     });
 });
 
+//GET request for countries:
+app.get('/countries', function(request, response) {
+    let connection = connect();
+
+    let promise = connection.select().from('countries');
+
+    promise.then(function(countries) {
+        //success:
+        response.json(countries);
+    }, function() {
+        //error:
+        response.json({
+            error: 'Something went wrong when finding countries'
+        });
+    });
+});
 
 
 function connect() {
