@@ -10,21 +10,12 @@ var request = require('request');
 var backend_logic = require('./logic');
 
 
-app.get('/', function(req, res) {
-    //first run the backend logic:
-    backend_logic.logic;
-
-
-    res.json({
-        description: 'backend logic run'
-    })
-});
-
-
 //GET request for users:
 app.get('/api/users', function(request, response) {
     
-    
+    //first run the backend logic:
+    backend_logic.logic;
+
 
     let connection = connect();
     let promise = connection.select().from('users').orderBy('Points', 'desc');

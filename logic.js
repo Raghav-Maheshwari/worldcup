@@ -279,9 +279,7 @@ function runLogic() {
 }
 
 
-runLogic(function(callback){
-    process.exit(0);
-});
+runLogic();
 
 module.exports = {
     logic: runLogic()
