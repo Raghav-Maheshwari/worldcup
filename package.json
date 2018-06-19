@@ -4,6 +4,7 @@
   "description": "A single page dynamic web app for visualizing and managing the World Cup 2018 Competition game",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
