@@ -7,11 +7,27 @@ var app = express();
 var router = express.Router();
 var request = require('request');
 
+var backend_logic = require('./logic');
+
+
+app.get('/', function(req, res) {
+    //first run the backend logic:
+    backend_logic.logic;
+
+
+    res.json({
+        description: 'backend logic run'
+    })
+});
+
+
 //GET request for users:
 app.get('/api/users', function(request, response) {
-    let connection = connect();
+    
+    
 
-    let promise = connection.select().from('users');
+    let connection = connect();
+    let promise = connection.select().from('users').orderBy('Points', 'desc');
 
     promise.then(function(users) {
         //success:
@@ -29,14 +45,14 @@ app.get('/api/user_countries', function(request, response) {
     let connection = connect();
 
     let promise = connection.select()
-        .from('users').innerJoin('user_countries', 'users.UserID', '=', 'user_countries.UserID')
+        .from('user_countries').innerJoin('users', 'user_countries.UserID', '=', 'users.UserID')
         .innerJoin('countries', 'user_countries.CountryID', '=', 'countries.CountryID');
 
     promise.then(function(users) {
         response.json(users);
-    }, function() {
+    }, function(err) {
         response.json({
-            error: 'something went wrong'
+            error: err
         });
     });
 });
@@ -45,7 +61,7 @@ app.get('/api/user_countries', function(request, response) {
 app.get('/api/countries', function(request, response) {
     let connection = connect();
 
-    let promise = connection.select().from('countries');
+    let promise = connection.select().from('countries').orderBy('COuntry_points', 'desc');
 
     promise.then(function(countries) {
         //success:
