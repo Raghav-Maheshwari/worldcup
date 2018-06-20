@@ -84,7 +84,7 @@ app.get('/api/user_countries', function(request, response) {
 app.get('/api/countries', function(request, response) {
     let connection = connect();
 
-    let promise = connection.select().from('countries').orderBy('COuntry_points', 'desc');
+    let promise = connection.select().from('countries').limit(10).orderBy('Country_points', 'desc');
 
     promise.then(function(countries) {
         //success:

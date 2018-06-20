@@ -10,21 +10,40 @@
     
     <body>
         
-        <div class="container">
-             <h1>NaaS 2018 FIFA World Cup Challenge</h1>
-        
-                <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Name</th>
-                        <th>Points</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboard">
-                    
-            </tbody>
-        </table>      
+        <div class="container-fluid">
+             <h1 style="text-align: center">NaaS 2018 FIFA World Cup Challenge</h1>
+             <br />
+                <div class="row">
+                    <div class="table-responsive col-md-6">
+                        <h3>Top Players</h3>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard">
+                            
+                            </tbody>
+                        </table>      
+                    </div>
 
+                    <div class="table-responsive col-md-6">
+                        <h3>Top Countries</h3>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Country</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="countries">
+                            
+                            </tbody>
+                        </table>      
+                    </div>
+                </div>
         </div>
        
 
@@ -43,6 +62,18 @@
                     $('#leaderboard').append(trHTML);
                 }
             });
+
+            $.ajax({
+                type: "GET",
+                url: document.location.href + "api/countries",
+                success: function(response) {
+                    var trHTML = '';
+                    $.each(response, function(i, item) {
+                        trHTML += '<tr><td>' + item.Country_name + '</td><td>' +  item.Country_points + '</td></tr>';
+                    });
+                    $('#countries').append(trHTML);
+                }
+            })
         }); 
 
     </script>
