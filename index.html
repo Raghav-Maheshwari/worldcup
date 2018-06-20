@@ -2,20 +2,49 @@
 <html>
     <head>
         <title>World Cup 2018 Challenge</title>
-
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-
-    
 
     </head>
     
     <body>
-        <h1>NaaS 2018 World Cup Challenge </h1>
+        
+        <div class="container">
+             <h1>NaaS 2018 FIFA World Cup Challenge</h1>
+        
+                <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard">
+                    
+            </tbody>
+        </table>      
 
-        <div id="example-table"></div>
+        </div>
+       
+
     </body>
 
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET", 
+                url: "http://localhost:8000/api/users",
+                success: function(response) {
+                    var trHTML = '';
+                    $.each(response, function(i, item) {
+                        trHTML += '<tr><td>' + item.Name + '</td><td>' +  item.Points + '</td></tr>';
+                    });
+                    $('#leaderboard').append(trHTML);
+                }
+            });
+        }); 
 
-   
+    </script>
+  
 </html>

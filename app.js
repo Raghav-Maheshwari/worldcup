@@ -10,23 +10,41 @@ var request = require('request');
 var path = require('path');
 
 
-var CronJob = require('cron').CronJob;
+// var CronJob = require('cron').CronJob;
 
-new CronJob('0*****', function() {
-    var backend_logic = require('./logic');
-    backend_logic.logic;
-    console.log('logic has been run to update database');
-}, null, true, 'America/Denver');
+// new CronJob('*****', function() {
+//     var backend_logic = require('./logic');
+//     backend_logic.logic;
+//     console.log('logic has been run to update database');
+// });
+
+
+var CronJob = require('cron').CronJob;
+new CronJob('0 0 */1 * * *', function() {
+    
+    console.log(new Date(), 'Every 1 hours');
+        try {
+          // task to be executed
+          var backend_logic = require('./logic');
+          
+          backend_logic.logic;
+        } catch (e) {
+            console.log(e);
+        }
+  }, function() {},
+  true
+).start();
 
 // //app.use(express.static(__dirname + '/public'));
 // app.get('/', function(request, response) {
 //     response.sendFile(path.join(__dirname,'/index.html'));
 // });
 
-// //GET request for homepage:
-// app.get('/*',function(request, response) {
-//     response.sendFile(path.join(__dirname+ '/index.html'));
-// });
+//GET request for homepage:
+app.get('/',function(request, response) {
+    response.sendFile(path.join(__dirname+ '/index.html'));
+});
+
 
 //GET request for users:
 app.get('/api/users', function(request, response) {
