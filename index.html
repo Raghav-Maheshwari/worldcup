@@ -34,7 +34,7 @@
         $(document).ready(function() {
             $.ajax({
                 type: "GET", 
-                url: "http://localhost:8000/api/users",
+                url: document.location.href + "api/users",
                 success: function(response) {
                     var trHTML = '';
                     $.each(response, function(i, item) {
