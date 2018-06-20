@@ -7,16 +7,30 @@ var app = express();
 var router = express.Router();
 var request = require('request');
 
-var backend_logic = require('./logic');
+var path = require('path');
 
+
+var CronJob = require('cron').CronJob;
+
+new CronJob('0*****', function() {
+    var backend_logic = require('./logic');
+    backend_logic.logic;
+    console.log('logic has been run to update database');
+}, null, true, 'America/Denver');
+
+// //app.use(express.static(__dirname + '/public'));
+// app.get('/', function(request, response) {
+//     response.sendFile(path.join(__dirname,'/index.html'));
+// });
+
+// //GET request for homepage:
+// app.get('/*',function(request, response) {
+//     response.sendFile(path.join(__dirname+ '/index.html'));
+// });
 
 //GET request for users:
 app.get('/api/users', function(request, response) {
     
-    //first run the backend logic:
-    backend_logic.logic;
-
-
     let connection = connect();
     let promise = connection.select().from('users').orderBy('Points', 'desc');
 
