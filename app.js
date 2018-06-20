@@ -33,8 +33,7 @@ new CronJob('0 0 */1 * * *', function() {
         }
   }, function() {},
   true
-).start();
-
+);
 // //app.use(express.static(__dirname + '/public'));
 // app.get('/', function(request, response) {
 //     response.sendFile(path.join(__dirname,'/index.html'));
