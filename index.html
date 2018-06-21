@@ -6,6 +6,18 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         
+        <style>
+            #players .hidden_row {
+                display: none;
+                font-weight: bold;
+            }
+
+            #leaderboard td {
+                cursor: pointer;
+            }
+        </style>
+
+
     </head>
     
     <body>
@@ -16,7 +28,7 @@
                 <div class="row">
                     <div class="table-responsive col-md-6">
                         <h3>Top Players</h3>
-                        <table class="table">
+                        <table id="players" class="table table-hover">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Name</th>
@@ -35,7 +47,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>Country</th>
-                                    <th>Points</th>
+                                    <th>Score</th>
                                 </tr>
                             </thead>
                             <tbody id="countries">
@@ -57,7 +69,8 @@
                 success: function(response) {
                     var trHTML = '';
                     $.each(response, function(i, item) {
-                        trHTML += '<tr><td>' + item.Name + '</td><td>' +  item.Points + '</td></tr>';
+                        trHTML += '<tr role="button" id="' + item.UserID +'"><td>' + item.Name + '</td><td>' +  item.Points.toFixed(2) + '</td></tr>'
+                            + '<tr id="hidden_row' + item.UserID + '" class="hidden_row"><td colspan="2"></td></tr>';
                     });
                     $('#leaderboard').append(trHTML);
                 }
@@ -67,14 +80,38 @@
                 type: "GET",
                 url: document.location.href + "api/countries",
                 success: function(response) {
+                    
                     var trHTML = '';
                     $.each(response, function(i, item) {
-                        trHTML += '<tr><td>' + item.Country_name + '</td><td>' +  item.Country_points + '</td></tr>';
+                        trHTML += '<tr><td>' + item.Country_name + '</td><td>' +  item.Country_points.toFixed(2) + '</td></tr>';
                     });
                     $('#countries').append(trHTML);
                 }
             })
-        }); 
+        });
+
+        //jQuery for expanding table rows:
+        $("#leaderboard").on('click','tr', function() {
+            var id = $(this).attr('id');
+            $("#hidden_row" + id).toggle();
+
+            
+            //console.log(id);
+            $.ajax({
+                type: "GET",
+                url: document.location.href + "api/users/" + id,
+                success: function(response) {
+                    console.log(response);
+                    var tdHTML = 'Teams: ';
+                    $.each(response, function(i, item) {
+                        tdHTML += item.country_name + "(" + item.country_points.toFixed(2) + ") ";
+                    });
+                    var tdid = "#hidden_row" + id + " td";
+                    //console.log(tdHTML);
+                    $(tdid).text(tdHTML);
+                }
+            });
+        });
 
     </script>
   

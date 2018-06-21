@@ -37,7 +37,12 @@ function logic() {
             //close the database:
             connection.destroy();   
 
-            http.get('http://worldcup.sfg.io/matches?by_date=asc', function(res) {
+            const options = {
+                hostname: 'worldcup.sfg.io',
+                path: '/matches?by_date=asc'
+            }
+
+            http.get(options, function(res) {
                 var body = '';
 
                 res.on('data', function(chunk) {
@@ -112,7 +117,8 @@ function logic() {
 
                     if (winner_cost < loser_cost) {
                         //we have an upset on our hands:
-                        points_to_winner = ((loser_cost/winner_cost) * 3)
+                        points_to_winner = ((loser_cost/winner_cost) * 3);
+                        points_to_winner = Math.round(points_to_winner * 100) / 100;
                     } else {
                         points_to_winner = 3;
                     }
@@ -142,7 +148,7 @@ function logic() {
                         connection('countries').where({
                             Country_name: teamA
                         }).update({
-                            Country_points: (1*(teamB_cost/teamA_cost))
+                            Country_points: Math.round((1*(teamB_cost/teamA_cost)) * 100 ) / 100
                         }).then(function(rows) {
                             console.log('database updated draw:', teamA);
                         });
@@ -159,7 +165,7 @@ function logic() {
                         connection('countries').where({
                             Country_name: teamB
                         }).update({
-                            Country_points: (1*(teamA_cost/teamB_cost))
+                            Country_points: Math.round((1*(teamA_cost/teamB_cost)) * 100) / 100
                         }).then(function(rows) {
                             console.log('database updated draw:', teamB);
                         });
