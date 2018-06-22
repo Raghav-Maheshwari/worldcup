@@ -9,15 +9,10 @@ var request = require('request');
 
 var path = require('path');
 
+var Slack = require('slack-node');
 
-// var CronJob = require('cron').CronJob;
-
-// new CronJob('*****', function() {
-//     var backend_logic = require('./logic');
-//     backend_logic.logic;
-//     console.log('logic has been run to update database');
-// });
-
+slack = new Slack();
+slack.setWebhook("https://hooks.slack.com/services/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");
 
 // var CronJob = require('cron').CronJob;
 // new CronJob('0 0 */1 * * *', function() {
@@ -34,18 +29,44 @@ var path = require('path');
 //   }, function() {},
 //   true
 // );
-// //app.use(express.static(__dirname + '/public'));
-// app.get('/', function(request, response) {
-//     response.sendFile(path.join(__dirname,'/index.html'));
-// });
+
+
+
 
 //GET request for homepage:
 app.get('/',function(request, response) {
     var backend_logic = require('./logic');
-    backend_logic.logic;
+    var dologic = backend_logic.logic;
     response.sendFile(path.join(__dirname+ '/index.html'));
 });
 
+app.get('/slack', function(request, response) {
+    let connection = connect();
+    let promise = connection.select().from('users').orderBy('Points', 'desc').first();
+
+    promise.then(function(user) {
+        //success:
+        
+        var text = "Good morning, <!channel|channel>, " user.Name + " is currently in the lead with " + user.Points + " points!";
+
+        slack.webhook({
+            channel: "#worldcup",
+            username: "footybot",
+            text: text
+        }, function(err, response) {
+            console.log(response);
+        });
+
+        //response.json(user); 
+
+    }, function() { 
+        //error:
+        response.json({
+            error: 'error'
+        });
+    });
+
+})
 
 //GET request for users:
 app.get('/api/users', function(request, response) {
