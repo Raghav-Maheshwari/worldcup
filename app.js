@@ -14,21 +14,21 @@ var Slack = require('slack-node');
 slack = new Slack();
 slack.setWebhook("https://hooks.slack.com/services/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");
 
-// var CronJob = require('cron').CronJob;
-// new CronJob('0 0 */1 * * *', function() {
+var CronJob = require('cron').CronJob;
+new CronJob('0 0 */1 * * *', function() {
     
-//     console.log(new Date(), 'Every 1 hours');
-//         try {
-//           // task to be executed
-//           var backend_logic = require('./logic');
+    console.log(new Date(), 'Every 1 hours');
+        try {
+          // task to be executed
+          var backend_logic = require('./logic');
           
-//           backend_logic.logic;
-//         } catch (e) {
-//             console.log(e);
-//         }
-//   }, function() {},
-//   true
-// );
+          backend_logic.logic;
+        } catch (e) {
+            console.log(e);
+        }
+  }, function() {},
+  true
+);
 
 app.get('/update', function(request, response) {
     var backend_logic = require('./logic');
