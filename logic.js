@@ -138,42 +138,42 @@ function logic() {
                     });
                 } else {
                     
-                    var teamA = teams[0].Country_name;
-                    var teamB = teams[1].Country_name;
+                    var teamA = teams[0];
+                    var teamB = teams[1];
 
                     var teamA_cost = teams[0].Cost;
                     var teamB_cost = teams[1].Cost;
 
                     if (teamA_cost < teamB_cost) {
                         connection('countries').where({
-                            Country_name: teamA
+                            Country_name: teamA.Country_name
                         }).update({
-                            Country_points: Math.round((1*(teamB_cost/teamA_cost)) * 100 ) / 100
+                            Country_points: teamA.Country_points +  Math.round((1*(teamB_cost/teamA_cost)) * 100 ) / 100
                         }).then(function(rows) {
                             console.log('database updated draw:', teamA);
                         });
 
                         connection('countries').where({
-                            Country_name: teamB
+                            Country_name: teamB.Country_name
                         }).update({
-                            Country_points: 1
+                            Country_points: teamB.Country_points + 1
                         }).then(function(rows) {
                             console.log('database updated draw:', teamB);
                         });
 
                     } else {
                         connection('countries').where({
-                            Country_name: teamB
+                            Country_name: teamB.Country_name
                         }).update({
-                            Country_points: Math.round((1*(teamA_cost/teamB_cost)) * 100) / 100
+                            Country_points: teamB.Country_points + Math.round((1*(teamA_cost/teamB_cost)) * 100) / 100
                         }).then(function(rows) {
                             console.log('database updated draw:', teamB);
                         });
 
                         connection('countries').where({
-                            Country_name: teamA
+                            Country_name: teamA.Country_name
                         }).update({
-                            Country_points: 1
+                            Country_points: teamA.Country_points + 1
                         }).then(function(rows) {
                             console.log('database updated draw:', teamA);
                         });

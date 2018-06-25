@@ -30,13 +30,18 @@ slack.setWebhook("https://hooks.slack.com/services/T52T9TC2G/BBBHTLUUR/u8HsO3Pgp
 //   true
 // );
 
+app.get('/update', function(request, response) {
+    var backend_logic = require('./logic');
+    let promise = backend_logic.logic;
 
+    response.json({
+        note: 'database updated'
+    });
+});
 
 
 //GET request for homepage:
 app.get('/',function(request, response) {
-    var backend_logic = require('./logic');
-    var dologic = backend_logic.logic;
     response.sendFile(path.join(__dirname+ '/index.html'));
 });
 
@@ -47,7 +52,7 @@ app.get('/slack', function(request, response) {
     promise.then(function(user) {
         //success:
         
-        var text = "Good morning, <!channel|channel>, " user.Name + " is currently in the lead with " + user.Points + " points!";
+        var text = "Good morning, <!channel|channel>, " + user.Name + " is currently in the lead with " + user.Points + " points!";
 
         slack.webhook({
             channel: "#worldcup",
@@ -57,7 +62,7 @@ app.get('/slack', function(request, response) {
             console.log(response);
         });
 
-        //response.json(user); 
+        response.json(user); 
 
     }, function() { 
         //error:
