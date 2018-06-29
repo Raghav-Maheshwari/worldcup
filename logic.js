@@ -85,6 +85,19 @@ function logic() {
                 // We have a single game to look at:
                 var teams = rows;
                 console.log('teams:', teams);
+
+
+                //Getting the date:
+                var match_date = new Date(match.date);
+                var round16begin = new Date("2018-06-30");
+                var round16end = new Date("2018-07-03");
+                var quarterbegin = new Date("2018-07-06");
+                var quarterend = new Date("2018-07-07");
+                var semibegin = new Date("2018-07-10");
+                var semiend = new Date("2018-07-14");
+                var final = new Date("2018-07-15");
+
+                //console.log('date', match_date); 
                 
                 var winner, loser;
                 var draw = true;
@@ -113,14 +126,27 @@ function logic() {
 
                     //console.log('winner_cost:', winner_cost, 'loser_cost', loser_cost);
 
+                    var base_points;
+                    if (match_date.getTime() < round16begin.getTime()) {
+                        base_points = 3;
+                    } else if (round16begin.getTime() <= match_date.getTime() && match_date.getTime() <= round16end.getTIme()) {
+                        base_points = 6;
+                    } else if (quarterbegin.getTime() <= match_date.getTime() && match_date.getTime() <= quarterend.getTime()) {
+                        base_points = 9;
+                    } else if (semibegin.getTime() <= match_date.getTime() && match_date.getTime() <= semiend.getTime()) {
+                        base_points = 12;
+                    } else if (match_date.getTime() == final.getTime()) {
+                        base_points = 15;
+                    }   
+
                     var upset, points_to_winner;
 
                     if (winner_cost < loser_cost) {
                         //we have an upset on our hands:
-                        points_to_winner = ((loser_cost/winner_cost) * 3);
+                        points_to_winner = ((loser_cost/winner_cost) * base_points);
                         points_to_winner = Math.round(points_to_winner * 100) / 100;
                     } else {
-                        points_to_winner = 3;
+                        points_to_winner = base_points;
                     }
                 }
 
