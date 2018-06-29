@@ -15,6 +15,11 @@
             #leaderboard td {
                 cursor: pointer;
             }
+
+            #refresh_btn {
+                text-align: center;
+                margin: 10px;
+            }
         </style>
 
 
@@ -23,8 +28,8 @@
     <body>
         
         <div class="container-fluid">
-             <h1 style="text-align: center">NaaS 2018 FIFA World Cup Challenge</h1>
              <br />
+             <h1 style="text-align: center">NaaS 2018 FIFA World Cup Challenge</h1>
                 <div class="row">
                     <div class="table-responsive col-md-6">
                         <h3>Top Players</h3>
@@ -56,6 +61,9 @@
                         </table>      
                     </div>
                 </div>
+                <div id="refresh_btn">
+                    <input id="refresh" type="button" value="Score's seem wrong? Click here to refresh" class="btn btn-info">
+                </div>
         </div>
        
 
@@ -86,6 +94,17 @@
                         trHTML += '<tr><td>' + item.Country_name + '</td><td>' +  item.Country_points.toFixed(2) + '</td></tr>';
                     });
                     $('#countries').append(trHTML);
+                }
+            })
+        });
+
+        //jQuery for refreshing data:
+        $("#refresh").on('click', function() {
+            $.ajax({
+                type: "GET",
+                url: document.location.href + "update",
+                success: function(response) {
+                    location.reload(true);
                 }
             })
         });
