@@ -129,7 +129,7 @@ function logic() {
                     var base_points;
                     if (match_date.getTime() < round16begin.getTime()) {
                         base_points = 3;
-                    } else if (round16begin.getTime() <= match_date.getTime() && match_date.getTime() <= round16end.getTIme()) {
+                    } else if (round16begin.getTime() <= match_date.getTime() && match_date.getTime() <= round16end.getTime()) {
                         base_points = 6;
                     } else if (quarterbegin.getTime() <= match_date.getTime() && match_date.getTime() <= quarterend.getTime()) {
                         base_points = 9;
