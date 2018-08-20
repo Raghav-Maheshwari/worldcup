@@ -51,7 +51,6 @@ app.get('/slack', function(request, response) {
 
     promise.then(function(user) {
         //success:
-        
         var text = "Good morning, <!channel|channel>, " + user.Name + " is currently in the lead with " + user.Points + " points!";
 
         slack.webhook({

@@ -22,7 +22,6 @@
             }
         </style>
 
-
     </head>
     
     <body>
@@ -61,15 +60,20 @@
                         </table>      
                     </div>
                 </div>
+                <!-- 
+                // do not require button anymore 
                 <div id="refresh_btn">
                     <input id="refresh" type="button" value="Score's seem wrong? Click here to refresh" class="btn btn-info">
                 </div>
+                -->
+
         </div>
        
 
     </body>
 
     <script>
+        // Populate the tables when the page is visited
         $(document).ready(function() {
             $.ajax({
                 type: "GET", 
@@ -113,7 +117,6 @@
         $("#leaderboard").on('click','tr', function() {
             var id = $(this).attr('id');
             $("#hidden_row" + id).toggle();
-
             
             //console.log(id);
             $.ajax({
