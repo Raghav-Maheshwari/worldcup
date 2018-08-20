@@ -22,6 +22,8 @@ function logic() {
     let connection = connect();
     var matches = [];
 
+    // async.series(tasks, callback) runs all the 'tasks' collection in series -
+    // each running once the previous function has completed
     async.series([
         function(callback) {
             //Update scores to zero:
@@ -42,18 +44,26 @@ function logic() {
                 path: '/matches?by_date=asc'
             }
 
+
             http.get(options, function(res) {
+                // function(res) called when connection is established
                 var body = '';
 
                 res.on('data', function(chunk) {
+                    // on('data') called when there's a chunk of data (this will almost certainly be more than once)
+                    // since we know data is coming in as a string anways, let's concatenate the chunks into one string
                     body += chunk;
                 });
 
+                // listening to the stream's 'end' event
                 res.on('end', function() {
+                    
+                    // parse data string into json object
                     var data = JSON.parse(body);
                     
                     for (x in data) {
                         if (data[x].status == 'completed') {       
+                            // extract relevant attributes from data and place into a 'match' object
                             var match = {
                                 winner: data[x].winner,
                                 teamA: data[x].home_team.country,
@@ -65,15 +75,18 @@ function logic() {
                             matches.push(match);
                         }
                     }
+                    //pass matches into callback results array
                     callback(null, matches);
                 });
             });
 
         }
     ], function(err, results) {
-        
+        //results is now equal to matches[] array
         let connection = connect();
 
+        // Applies the function(match,callback) for each item in 'matches', but in series (instead of parallel)
+        // This ensures that the matches are parsed in order
         async.forEachSeries(matches, function(match, callback) {
             console.log('current match:', match);
 
@@ -87,7 +100,7 @@ function logic() {
                 console.log('teams:', teams);
 
 
-                //Getting the date:
+                //Getting the date of match and comparing it WC dates for rounds:
                 var match_date = new Date(match.date);
                 var round16begin = new Date("2018-06-30");
                 var round16end = new Date("2018-07-03");
@@ -163,7 +176,7 @@ function logic() {
                         console.log('database updated');
                     });
                 } else {
-                    
+                    // we had a draw, but need to figure out who the underdog was
                     var teamA = teams[0];
                     var teamB = teams[1];
 
@@ -208,10 +221,8 @@ function logic() {
 
                 callback(null);
             });
-
-
         }, function(err) {
-        
+            //all matches have been looked at. Now update the points for each user
             var user_objects = [];
             
             connection.select()
@@ -219,6 +230,7 @@ function logic() {
             .innerJoin('countries', 'user_countries.CountryID', '=', 'countries.CountryID')
             .then(function(users) {
 
+            //users object is a nested object for each user, we have a list of countries they chose for their bracket
                 for (var i=1; i < 10; i++) {
                     var running_total = 0;
                     var country_list = [];
